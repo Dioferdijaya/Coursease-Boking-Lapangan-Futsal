@@ -1,0 +1,63 @@
+/* src/styles/Fields.css */
+
+.fields-container {
+  width: 100%;
+  max-width: 900px; /* Batasi lebar maksimum agar tidak terlalu lebar di layar besar */
+  margin: 0 auto; /* Posisi di tengah dengan margin atas-bawah */
+  padding: 20px;
+  background-color: #f4f6f7; /* Latar belakang abu-abu cerah */
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.fields-title {
+  font-size: 28px;
+  color: #0f2027; /* Warna gelap dari tema sebelumnya */
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.fields-list {
+  list-style-type: none; /* Hapus bullet points default */
+  padding: 0;
+  margin: 0;
+  display: grid; /* Gunakan grid untuk layout yang rapi */
+  gap: 20px; /* Jarak antar item */
+}
+
+.field-item {
+  background: linear-gradient(
+    135deg,
+    #0f2027,
+    #203a43
+  ); /* Gradient gelap seperti form */
+  color: #fff;
+  padding: 25px 20px;
+  border-radius: 10px;
+  display: flex;
+  justify-content: space-between; /* Posisikan nama dan lokasi berjauhan */
+  align-items: center;
+  border-left: 5px solid transparent; /* Garis aksen di kiri */
+  transition: all 0.3s ease;
+}
+
+.field-item:hover {
+  transform: translateY(-5px); /* Efek mengangkat saat di-hover */
+  border-left-color: #f39c12; /* Warna aksen oranye */
+  cursor: pointer;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+}
+
+.field-name {
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+
+.field-location {
+  font-size: 0.9rem;
+  font-style: italic;
+  color: #ccc;
+}

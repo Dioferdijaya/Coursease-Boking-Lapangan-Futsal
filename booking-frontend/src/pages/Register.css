@@ -1,0 +1,154 @@
+/* Posisikan form di tengah layar */
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  width: 100vw;
+  position: absolute;
+  top: 0;
+  left: 0;
+  margin: 0;
+  padding: 0;
+  background: #0f2027;/* abu cerah */
+}
+
+/* Reset default margin dan padding */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Card utama */
+.wrapper {
+  width: 100%;
+  max-width: 90%;
+  background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+  /* bisa diganti gradient biru sesuai selera */
+  backdrop-filter: blur(9px);
+  color: #fff;
+  border-radius: 12px;
+  padding: clamp(20px, 5vw, 40px);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+  margin: 15px;
+  height: auto;
+  min-height: 80vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.form-login {
+  font-size: 32px;
+  text-align: center;
+  margin-bottom: 10px;
+  font-weight: bold;
+}
+
+.description {
+  text-align: center;
+  margin-bottom: 30px;
+  padding: 0 20px;
+}
+
+.description h2 {
+  font-size: 1.5rem;
+  margin-bottom: 10px;
+  background: linear-gradient(45deg, #f39c12, #fff);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.description p {
+  font-size: 1rem;
+  color: rgba(255, 255, 255, 0.8);
+  margin-bottom: 15px;
+}
+
+.description ul {
+  list-style: none;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 10px;
+}
+
+.description li {
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 0.9rem;
+  padding: 8px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(5px);
+}
+
+/* Input wrapper */
+.input-box {
+  width: 100%;
+  margin: 20px 0;
+}
+
+/* Input transparan dengan border putih */
+.input-box input {
+  width: 100%;
+  height: 45px;
+  background: transparent;            /* ✅ transparan */
+  border: 2px solid rgba(255, 255, 255, 0.5); /* ✅ garis putih */
+  border-radius: 40px;
+  font-size: 16px;
+  color: #fff;
+  padding: 0 20px;
+  outline: none;
+  transition: 0.3s;
+  box-sizing: border-box;
+}
+
+/* Warna placeholder putih */
+.input-box input::placeholder {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+/* Efek focus */
+.input-box input:focus {
+  border-color: #fff;
+  box-shadow: 0 0 6px rgba(255, 255, 255, 0.6);
+}
+
+/* Tombol */
+.btn {
+  width: 100%;
+  height: 45px;
+  background: #fff;
+  border: none;
+  border-radius: 40px;
+  cursor: pointer;
+  font-size: 16px;
+  color: #333;
+  font-weight: 600;
+  margin-top: 10px;
+  transition: 0.3s;
+}
+
+.btn:hover {
+  background: #f39c12; /* warna oranye highlight */
+  color: #fff;
+}
+
+/* Link bawah */
+.register-link {
+  font-size: 14px;
+  text-align: center;
+  margin: 20px 0 10px;
+}
+
+.register-link p a {
+  color: #f39c12; /* oranye biar kontras */
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.register-link p a:hover {
+  text-decoration: underline;
+}

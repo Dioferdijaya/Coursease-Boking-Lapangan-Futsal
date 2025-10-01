@@ -1,0 +1,50 @@
+/* src/styles/UserHome.css */
+.user-home-container {
+  max-width: 900px;
+  margin: 40px auto;
+  padding: 30px;
+  text-align: center;
+  font-family: sans-serif;
+}
+
+.user-home-container h1 {
+  color: #0f2027;
+}
+
+.user-home-container p {
+  color: #555;
+  font-size: 1.1em;
+  margin-bottom: 40px;
+}
+
+.home-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 25px;
+}
+
+.home-card {
+  background-color: #fff;
+  border-radius: 12px;
+  padding: 30px 20px;
+  text-decoration: none;
+  color: #2c5364;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border-bottom: 4px solid #f39c12;
+}
+
+.home-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12);
+}
+
+.card-icon {
+  font-size: 3rem;
+  margin-bottom: 15px;
+}
+
+.card-title {
+  font-size: 1.2rem;
+  font-weight: bold;
+}

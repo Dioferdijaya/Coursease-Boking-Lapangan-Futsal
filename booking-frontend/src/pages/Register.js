@@ -1,12 +1,12 @@
 // src/pages/Register.jsx
 import { useState } from "react";
-import { useNavigate, Link } from "react-router-dom"; // Import useNavigate dan Link
+import { useNavigate, Link } from "react-router-dom";
 import axios from "axios";
-import "./Register.css"; // Gunakan CSS yang sama dengan login
+import "./Register.css";
 
 export default function Register() {
   const [form, setForm] = useState({ name: "", email: "", password: "" });
-  const navigate = useNavigate(); // ✅ 1. Panggil hook useNavigate
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -16,76 +16,78 @@ export default function Register() {
     e.preventDefault();
     try {
       const res = await axios.post("http://localhost:5000/register", form);
-      alert(res.data.message); // Tampilkan pesan sukses
-      
-      navigate("/login"); // ✅ 2. Arahkan ke halaman login setelah sukses
-
+      alert(res.data.message);
+      navigate("/login");
     } catch (err) {
       alert(err.response?.data?.message || "Registrasi gagal!");
     }
   };
 
   return (
-    <div className="container">
-      <div className="wrapper">
-        <form onSubmit={handleSubmit}>
-          <h1 className="form-login">Register</h1>
-          <div className="description">
-            <h2>Selamat Datang di Courstease</h2>
-            <p>Platform booking lapangan Futsal terpercaya untuk mewujudkan semangat berolahraga Anda.</p>
-            <ul>
-              <li>✨ Booking lapangan dengan mudah</li>
-              <li>🏃‍♂️ Berbagai jenis lapangan Futsal</li>
-              <li>⚡ Proses booking cepat</li>
-              <li>🔒 Pembayaran aman</li>
-            </ul>
-          </div>
+    <div className="auth-page">
+      <div className="auth-overlay">
+        <div className="auth-branding-left">
+          <h1 className="brand-title">
+            <span className="brand-icon">⚽</span>
+            COURSTEASE
+          </h1>
+          <h2 className="brand-subtitle">EXPLORE HORIZONS</h2>
+          <p className="brand-tagline">Where Your Dream Field Becomes Reality.</p>
+        </div>
 
-          <div className="input-box">
-            <input
-              name="name"
-              type="text"
-              placeholder="Nama Lengkap"
-              value={form.name}
-              onChange={handleChange}
-              required
-            />
-          </div>
+        <div className="auth-form-box">
+          <form onSubmit={handleSubmit} className="auth-form">
+            <div className="form-group">
+              <label>Full name</label>
+              <input
+                name="name"
+                type="text"
+                placeholder="Enter your full name"
+                value={form.name}
+                onChange={handleChange}
+                required
+              />
+            </div>
 
-          <div className="input-box">
-            <input
-              name="email"
-              type="email"
-              placeholder="Email"
-              value={form.email}
-              onChange={handleChange}
-              required
-            />
-          </div>
+            <div className="form-group">
+              <label>Email</label>
+              <input
+                name="email"
+                type="email"
+                placeholder="Enter your email"
+                value={form.email}
+                onChange={handleChange}
+                required
+              />
+            </div>
 
-          <div className="input-box">
-            <input
-              name="password"
-              type="password"
-              placeholder="Password"
-              value={form.password}
-              onChange={handleChange}
-              required
-            />
-          </div>
+            <div className="form-group">
+              <label>Password</label>
+              <input
+                name="password"
+                type="password"
+                placeholder="••••••••••"
+                value={form.password}
+                onChange={handleChange}
+                required
+              />
+            </div>
 
-          <button type="submit" className="btn">
-            Register
-          </button>
+            <button type="submit" className="submit-btn">
+              JOIN US
+            </button>
 
-          {/* ✅ 3. Tambahkan link untuk pindah ke halaman Login */}
-          <div className="register-link">
-            <p>
-              Sudah punya akun? <Link to="/login">Login di sini</Link>
-            </p>
-          </div>
-          
-        </form>
+            <div className="divider-text">or</div>
+
+            <button type="button" className="google-btn" disabled>
+              <span className="google-icon">G</span> Sign in with Google
+            </button>
+
+            <div className="signup-link">
+              Already have an account? <Link to="/login">Sign In</Link>
+            </div>
+          </form>
+        </div>
       </div>
     </div>
   );

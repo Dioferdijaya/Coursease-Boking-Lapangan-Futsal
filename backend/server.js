@@ -9,6 +9,10 @@ const axios = require("axios");
 const http = require("http");
 const { Server } = require("socket.io");
 
+// Import logger dan middleware
+const logger = require("./logger");
+const { requestLogger, logRequest } = require("./middleware/requestLogger");
+
 const app = express();
 const server = http.createServer(app);
 const io = new Server(server, {
@@ -21,13 +25,18 @@ const io = new Server(server, {
 app.use(cors());
 app.use(express.json());
 
+// Add logging middleware
+app.use(logger.addRequestId);
+app.use(requestLogger);
+app.use(logRequest);
+
 // Koneksi ke Supabase
 const supabase = createClient(
   process.env.SUPABASE_URL,
   process.env.SUPABASE_ANON_KEY
 );
 
-console.log("Supabase client initialized...");
+logger.info("🚀 Supabase client initialized");
 
 // Konfigurasi Mayar.id
 const MAYAR_API_KEY = process.env.MAYAR_API_KEY;
@@ -249,7 +258,7 @@ app.post("/payment/callback", async (req, res) => {
         })
         .eq('payment_id', payment_link_id);
       
-      console.log(`Payment successful for booking ${metadata?.booking_id}`);
+      logger.info('Payment successful', { bookingId: metadata?.booking_id, paymentStatus: payment_status });
     } else if (status === 'expired') {
       await supabase
         .from('bookings')
@@ -440,18 +449,18 @@ const PORT = process.env.PORT || 5000;
 
 // ===== SOCKET.IO - REAL-TIME CHAT =====
 io.on('connection', (socket) => {
-  console.log('User connected:', socket.id);
+  logger.info('Socket connected', { socketId: socket.id });
 
   // Join room berdasarkan booking_id
   socket.on('join_chat', (booking_id) => {
     socket.join(`booking_${booking_id}`);
-    console.log(`User joined chat room: booking_${booking_id}`);
+    logger.info('User joined chat room', { bookingId: booking_id, socketId: socket.id });
   });
 
   // Admin join room untuk semua chat
   socket.on('admin_join', () => {
     socket.join('admin_room');
-    console.log('Admin joined admin room');
+    logger.info('Admin joined admin room', { socketId: socket.id });
   });
 
   // Kirim pesan
@@ -485,7 +494,7 @@ io.on('connection', (socket) => {
         });
       }
 
-      console.log('Message sent:', newMessage);
+      logger.info('Message sent', { bookingId: booking_id, senderId: sender_id, messageId: newMessage[0].id });
     } catch (err) {
       console.error('Error sending message:', err);
       socket.emit('message_error', { error: err.message });
@@ -510,7 +519,7 @@ io.on('connection', (socket) => {
   });
 
   socket.on('disconnect', () => {
-    console.log('User disconnected:', socket.id);
+    logger.info('Socket disconnected', { socketId: socket.id });
   });
 });
 
@@ -638,4 +647,4 @@ app.post("/messages", async (req, res) => {
   }
 });
 
-server.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+server.listen(PORT, () => logger.info(`🚀 Server running on port ${PORT}`, { port: PORT, environment: process.env.NODE_ENV || 'development' }));

@@ -15,6 +15,11 @@ build/
 dist/
 *.log
 
+# Logs directory (keep structure, ignore files)
+logs/*.log
+logs/combined.log
+logs/error.log
+
 # IDE
 .vscode/
 .idea/

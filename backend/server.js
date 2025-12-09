@@ -6,8 +6,18 @@ const cors = require("cors");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const axios = require("axios");
+const http = require("http");
+const { Server } = require("socket.io");
 
 const app = express();
+const server = http.createServer(app);
+const io = new Server(server, {
+  cors: {
+    origin: process.env.FRONTEND_URL || "http://localhost:3000",
+    methods: ["GET", "POST"]
+  }
+});
+
 app.use(cors());
 app.use(express.json());
 
@@ -427,4 +437,205 @@ app.put("/user/:id", async (req, res) => {
 });
 
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+
+// ===== SOCKET.IO - REAL-TIME CHAT =====
+io.on('connection', (socket) => {
+  console.log('User connected:', socket.id);
+
+  // Join room berdasarkan booking_id
+  socket.on('join_chat', (booking_id) => {
+    socket.join(`booking_${booking_id}`);
+    console.log(`User joined chat room: booking_${booking_id}`);
+  });
+
+  // Admin join room untuk semua chat
+  socket.on('admin_join', () => {
+    socket.join('admin_room');
+    console.log('Admin joined admin room');
+  });
+
+  // Kirim pesan
+  socket.on('send_message', async (data) => {
+    const { booking_id, sender_id, sender_role, message } = data;
+    
+    try {
+      // Simpan ke database
+      const { data: newMessage, error } = await supabase
+        .from('messages')
+        .insert([{
+          booking_id,
+          sender_id,
+          sender_role,
+          message,
+          created_at: new Date().toISOString()
+        }])
+        .select()
+        .single();
+
+      if (error) throw error;
+
+      // Broadcast ke room booking
+      io.to(`booking_${booking_id}`).emit('receive_message', newMessage);
+      
+      // Notify admin room jika pengirim adalah user
+      if (sender_role === 'user') {
+        io.to('admin_room').emit('new_user_message', {
+          booking_id,
+          message: newMessage
+        });
+      }
+
+      console.log('Message sent:', newMessage);
+    } catch (err) {
+      console.error('Error sending message:', err);
+      socket.emit('message_error', { error: err.message });
+    }
+  });
+
+  // Mark messages as read
+  socket.on('mark_read', async (data) => {
+    const { booking_id, user_id } = data;
+    
+    try {
+      await supabase
+        .from('messages')
+        .update({ is_read: true })
+        .eq('booking_id', booking_id)
+        .neq('sender_id', user_id);
+      
+      io.to(`booking_${booking_id}`).emit('messages_read', { booking_id });
+    } catch (err) {
+      console.error('Error marking messages as read:', err);
+    }
+  });
+
+  socket.on('disconnect', () => {
+    console.log('User disconnected:', socket.id);
+  });
+});
+
+// ===== CHAT API ENDPOINTS =====
+
+// Get messages untuk booking tertentu
+app.get("/messages/:booking_id", async (req, res) => {
+  const { booking_id } = req.params;
+  
+  try {
+    const { data, error } = await supabase
+      .from('messages')
+      .select(`
+        id, booking_id, sender_id, sender_role, message, created_at, is_read,
+        users (name)
+      `)
+      .eq('booking_id', booking_id)
+      .order('created_at', { ascending: true });
+    
+    if (error) throw error;
+    
+    const transformedData = data.map(msg => ({
+      ...msg,
+      sender_name: msg.users?.name
+    }));
+    
+    res.json(transformedData);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// Get all chats untuk admin
+app.get("/admin/chats", adminMiddleware, async (req, res) => {
+  try {
+    // Get distinct booking_ids yang ada pesan
+    const { data: bookings, error } = await supabase
+      .from('messages')
+      .select('booking_id')
+      .order('created_at', { ascending: false });
+    
+    if (error) throw error;
+    
+    // Get unique booking_ids
+    const uniqueBookingIds = [...new Set(bookings.map(b => b.booking_id))];
+    
+    // Get booking details with latest message
+    const chatList = [];
+    for (const booking_id of uniqueBookingIds) {
+      const { data: booking, error: bookingError } = await supabase
+        .from('bookings')
+        .select(`
+          id, date, start_time, status,
+          fields (name),
+          users (id, name, email)
+        `)
+        .eq('id', booking_id)
+        .single();
+      
+      if (bookingError) continue;
+      
+      // Get latest message
+      const { data: latestMsg } = await supabase
+        .from('messages')
+        .select('message, created_at, sender_role')
+        .eq('booking_id', booking_id)
+        .order('created_at', { ascending: false })
+        .limit(1)
+        .single();
+      
+      // Count unread messages
+      const { count } = await supabase
+        .from('messages')
+        .select('*', { count: 'exact', head: true })
+        .eq('booking_id', booking_id)
+        .eq('sender_role', 'user')
+        .eq('is_read', false);
+      
+      chatList.push({
+        booking_id: booking.id,
+        user_id: booking.users.id,
+        user_name: booking.users.name,
+        user_email: booking.users.email,
+        field_name: booking.fields.name,
+        booking_date: booking.date,
+        booking_time: booking.start_time,
+        status: booking.status,
+        latest_message: latestMsg?.message || '',
+        latest_message_time: latestMsg?.created_at || '',
+        latest_sender: latestMsg?.sender_role || '',
+        unread_count: count || 0
+      });
+    }
+    
+    res.json(chatList);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// Send message via API (alternative to socket)
+app.post("/messages", async (req, res) => {
+  const { booking_id, sender_id, sender_role, message } = req.body;
+  
+  try {
+    const { data, error } = await supabase
+      .from('messages')
+      .insert([{
+        booking_id,
+        sender_id,
+        sender_role,
+        message
+      }])
+      .select()
+      .single();
+    
+    if (error) throw error;
+    
+    // Emit via socket
+    io.to(`booking_${booking_id}`).emit('receive_message', data);
+    
+    res.json({ message: "Pesan terkirim", data });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+server.listen(PORT, () => console.log(`Server running on port ${PORT}`));

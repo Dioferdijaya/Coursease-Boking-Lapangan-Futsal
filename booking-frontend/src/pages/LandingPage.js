@@ -134,7 +134,10 @@ export default function LandingPage() {
             {user ? (
               <>
                 {user.role === 'admin' && (
-                  <Link to="/admin/bookings" className="nav-link" onClick={() => setMobileMenuOpen(false)}>Panel Admin</Link>
+                  <>
+                    <Link to="/admin/bookings" className="nav-link" onClick={() => setMobileMenuOpen(false)}>Panel Admin</Link>
+                    <Link to="/admin/chat" className="nav-link" onClick={() => setMobileMenuOpen(false)}>💬 Chat</Link>
+                  </>
                 )}
                 <Link to="/profile" className="nav-link" onClick={() => setMobileMenuOpen(false)}>Booking Saya</Link>
                 <button onClick={() => { handleLogout(); setMobileMenuOpen(false); }} className="nav-cta logout-btn">Keluar</button>

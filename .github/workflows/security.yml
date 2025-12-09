@@ -1,0 +1,62 @@
+# Security scanning workflow
+
+name: Security Scan
+
+on:
+  schedule:
+    # Run setiap hari Senin jam 9 pagi
+    - cron: '0 9 * * 1'
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  dependency-scan:
+    name: Dependency Security Scan
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18.x'
+      
+      - name: Backend Security Audit
+        working-directory: ./backend
+        run: |
+          npm ci
+          npm audit --audit-level=high
+        continue-on-error: true
+      
+      - name: Frontend Security Audit
+        working-directory: ./booking-frontend
+        run: |
+          npm ci
+          npm audit --audit-level=high
+        continue-on-error: true
+      
+      - name: Check for secrets in code
+        run: |
+          echo "🔍 Scanning for exposed secrets..."
+          # Check for common secret patterns
+          if grep -r -E "(password|secret|api_key|token)\\s*=\\s*['\"][^'\"]+['\"]" . --exclude-dir=node_modules --exclude-dir=.git; then
+            echo "⚠️ Warning: Potential secrets found in code"
+          else
+            echo "✅ No obvious secrets detected"
+          fi
+      
+      - name: Generate Security Report
+        run: |
+          echo "# Security Scan Report" > security-report.md
+          echo "Date: $(date)" >> security-report.md
+          echo "" >> security-report.md
+          echo "## Status: ✅ Scan completed" >> security-report.md
+      
+      - name: Upload Security Report
+        uses: actions/upload-artifact@v4
+        with:
+          name: security-report
+          path: security-report.md

@@ -395,6 +395,24 @@
   flex-wrap: wrap;
 }
 
+.btn-chat {
+  background: linear-gradient(135deg, #1a5490 0%, #2c5530 100%);
+  color: white;
+  border: none;
+  padding: 0.7rem 1.5rem;
+  border-radius: 25px;
+  font-weight: 600;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: all 0.3s;
+  box-shadow: 0 4px 15px rgba(26, 84, 144, 0.2);
+}
+
+.btn-chat:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(26, 84, 144, 0.3);
+}
+
 .btn-pay {
   background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%);
   color: #333;

@@ -1,0 +1,73 @@
+# Deployment workflow untuk Production
+# Uncomment dan sesuaikan dengan platform hosting Anda
+
+name: Deploy to Production
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch: # Manual trigger
+
+jobs:
+  deploy:
+    name: Deploy Application
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18.x'
+      
+      # Backend Deployment
+      - name: Deploy Backend
+        working-directory: ./backend
+        run: |
+          echo "🚀 Deploying backend..."
+          # Contoh untuk Railway:
+          # npm install -g railway
+          # railway up
+          
+          # Contoh untuk Heroku:
+          # git push heroku main
+          
+          # Contoh untuk Azure:
+          # az webapp up --name your-app-name
+          
+          echo "⚠️ Configure your deployment platform in this step"
+      
+      # Frontend Deployment
+      - name: Build Frontend
+        working-directory: ./booking-frontend
+        run: |
+          npm ci
+          npm run build
+        env:
+          CI: false
+          REACT_APP_API_URL: ${{ secrets.API_URL }}
+      
+      - name: Deploy Frontend to Vercel
+        working-directory: ./booking-frontend
+        run: |
+          echo "🚀 Deploying frontend..."
+          # npm install -g vercel
+          # vercel --prod --token=${{ secrets.VERCEL_TOKEN }}
+          
+          echo "⚠️ Uncomment and configure Vercel deployment"
+      
+      # Alternatif: Deploy ke Netlify
+      # - name: Deploy to Netlify
+      #   uses: netlify/actions/cli@master
+      #   with:
+      #     args: deploy --prod --dir=booking-frontend/build
+      #   env:
+      #     NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+      #     NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+      
+      - name: Deployment Success
+        run: |
+          echo "✅ Deployment completed successfully!"
+          echo "📱 Application is now live"

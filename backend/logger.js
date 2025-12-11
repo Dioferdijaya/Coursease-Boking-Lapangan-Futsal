@@ -71,24 +71,34 @@ const logger = winston.createLogger({
 
 // Add Loki transport if credentials are provided
 if (process.env.LOKI_HOST && process.env.LOKI_USERNAME && process.env.LOKI_PASSWORD) {
-  logger.add(new LokiTransport({
-    host: process.env.LOKI_HOST,
-    basicAuth: `${process.env.LOKI_USERNAME}:${process.env.LOKI_PASSWORD}`,
-    labels: { 
-      app: 'coursease-backend',
-      environment: NODE_ENV
-    },
-    json: true,
-    format: winston.format.json(),
-    replaceTimestamp: true,
-    onConnectionError: (err) => {
-      console.error('Loki connection error:', err);
-    }
-  }));
-  
-  logger.info('✅ Loki transport enabled');
+  try {
+    logger.add(new LokiTransport({
+      host: process.env.LOKI_HOST,
+      basicAuth: `${process.env.LOKI_USERNAME}:${process.env.LOKI_PASSWORD}`,
+      labels: { 
+        job: 'coursease-backend',
+        environment: NODE_ENV
+      },
+      json: true,
+      format: winston.format.json(),
+      replaceTimestamp: true,
+      onConnectionError: (err) => {
+        console.error('❌ Loki connection error:', err.message);
+      },
+      // Batch logs and retry on failure
+      batching: true,
+      interval: 5,
+      timeout: 30000
+    }));
+    
+    console.log('✅ Loki transport enabled');
+    console.log(`📡 Loki Host: ${process.env.LOKI_HOST}`);
+    console.log(`👤 Loki User: ${process.env.LOKI_USERNAME}`);
+  } catch (err) {
+    console.error('❌ Failed to add Loki transport:', err.message);
+  }
 } else {
-  logger.warn('⚠️ Loki transport disabled (missing credentials in .env)');
+  console.warn('⚠️ Loki transport disabled (missing credentials in .env)');
 }
 
 // Add request ID to logs

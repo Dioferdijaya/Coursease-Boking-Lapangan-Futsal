@@ -28,7 +28,7 @@ export default function AdminBookings() {
 
   const fetchBookings = async (token) => {
     try {
-      const res = await axios.get("http://localhost:5000/admin/bookings", {
+      const res = await axios.get(`${API_URL}/admin/bookings`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setBookings(res.data);
@@ -42,7 +42,7 @@ export default function AdminBookings() {
     const storedUser = JSON.parse(localStorage.getItem("user"));
     try {
       await axios.patch(
-        `http://localhost:5000/admin/bookings/${id}`,
+        `${API_URL}/admin/bookings/${id}`,
         { status: newStatus },
         { headers: { Authorization: `Bearer ${storedUser.token}` } }
       );

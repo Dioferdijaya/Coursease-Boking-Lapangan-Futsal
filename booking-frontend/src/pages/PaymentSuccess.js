@@ -19,7 +19,7 @@ export default function PaymentSuccess() {
 
   const checkPaymentStatus = async () => {
     try {
-      const res = await axios.get(`http://localhost:5000/payment/status/${bookingId}`);
+      const res = await axios.get(`${API_URL}/payment/status/${bookingId}`);
       setPaymentStatus(res.data);
       setLoading(false);
     } catch (err) {

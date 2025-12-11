@@ -41,7 +41,7 @@ export default function AdminChat() {
     if (!user) return;
 
     // Initialize socket connection
-    socketRef.current = io('http://localhost:5000', {
+    socketRef.current = io(API_URL, {
       transports: ['websocket', 'polling'],
       reconnection: true
     });
@@ -51,7 +51,7 @@ export default function AdminChat() {
     // Load chat list
     const loadChats = async () => {
       try {
-        const res = await axios.get('http://localhost:5000/admin/chats', {
+        const res = await axios.get(`${API_URL}/admin/chats`, {
           headers: { Authorization: `Bearer ${user.token}` }
         });
         setChatList(res.data);
@@ -112,7 +112,7 @@ export default function AdminChat() {
     if (!socketRef.current) return;
     
     try {
-      const res = await axios.get(`http://localhost:5000/messages/${booking_id}`);
+      const res = await axios.get(`${API_URL}/messages/${booking_id}`);
       setMessages(res.data);
       
       const socket = socketRef.current;

@@ -41,7 +41,7 @@ export default function Profile() {
 
     // Ambil booking user
     axios
-      .get(`http://localhost:5000/bookings?user_id=${userData.id}`)
+      .get(`${API_URL}/bookings?user_id=${userData.id}`)
       .then((res) => setBookings(res.data))
       .catch((err) => console.error("Gagal ambil booking:", err));
   }, [navigate]);
@@ -99,7 +99,7 @@ export default function Profile() {
       }
 
       const res = await axios.put(
-        `http://localhost:5000/user/${user.id}`,
+        `${API_URL}/user/${user.id}`,
         updateData
       );
 

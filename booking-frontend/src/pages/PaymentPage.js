@@ -46,7 +46,7 @@ export default function PaymentPage() {
     setLoading(true);
     
     try {
-      const paymentRes = await axios.post('http://localhost:5000/payment/create', {
+      const paymentRes = await axios.post(`${API_URL}/payment/create`, {
         booking_id: bookingData.id,
         user_email: user.email,
         user_name: user.name,

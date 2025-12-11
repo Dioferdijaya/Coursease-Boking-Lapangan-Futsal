@@ -2,6 +2,7 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import axios from "axios";
+import API_URL from "../config";
 import "./LandingPage.css";
 
 export default function LandingPage() {
@@ -37,7 +38,7 @@ export default function LandingPage() {
     }
 
     // Fetch fields from backend
-    axios.get('http://localhost:5000/fields')
+    axios.get(`${API_URL}/fields`)
       .then(res => setFields(res.data))
       .catch(err => console.error(err));
   }, []);
@@ -71,7 +72,7 @@ export default function LandingPage() {
     };
 
     try {
-      const res = await axios.post('http://localhost:5000/book', bookingData);
+      const res = await axios.post(`${API_URL}/book`, bookingData);
       const booking = res.data.booking;
       
       // Tutup modal

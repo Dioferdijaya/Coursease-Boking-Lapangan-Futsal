@@ -17,7 +17,7 @@ export default function ChatBox({ booking, user, onClose }) {
 
   useEffect(() => {
     // Initialize socket connection
-    socketRef.current = io('http://localhost:5000', {
+    socketRef.current = io(API_URL, {
       transports: ['websocket', 'polling'],
       reconnection: true
     });
@@ -27,7 +27,7 @@ export default function ChatBox({ booking, user, onClose }) {
     // Load existing messages
     const loadMessages = async () => {
       try {
-        const res = await axios.get(`http://localhost:5000/messages/${booking.id}`);
+        const res = await axios.get(`${API_URL}/messages/${booking.id}`);
         setMessages(res.data);
       } catch (err) {
         console.error('Error loading messages:', err);

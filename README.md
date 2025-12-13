@@ -101,6 +101,11 @@ https://github.com/Dioferdijaya/Coursease-Boking-Lapangan-Futsal.git
 - ✅ Notifikasi pesan belum dibaca
 - ✅ UI chat modern dan responsif
 
+##Tampilan
+-Fitur edit profil
+![WhatsApp Image 2025-12-09 at 8 48 07 PM](https://github.com/user-attachments/assets/9372d6ac-d94e-44cc-b9d8-e53bc989e82a)
+
+
 ## **Aktifkan atau jalankan server via terminal**
 1. **Install dependencies backend:**
    ```bash

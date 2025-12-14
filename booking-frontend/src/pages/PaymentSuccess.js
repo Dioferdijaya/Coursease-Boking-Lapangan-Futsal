@@ -1,7 +1,8 @@
 // src/pages/PaymentSuccess.js
 import { useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import API_URL from "../api";
+import API_URL from "../config";
+
 
 import axios from "axios";
 import "./PaymentSuccess.css";

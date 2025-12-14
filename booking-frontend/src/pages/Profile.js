@@ -2,7 +2,8 @@
 import { useEffect, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import axios from "axios";
-import API_URL from "../api";
+import API_URL from "../config";
+
 
 import ChatBox from "./ChatBox";
 import "./Profile.css";

@@ -2,7 +2,8 @@
 import { useState, useEffect, useRef } from 'react';
 import io from 'socket.io-client';
 import axios from 'axios';
-import API_URL from "../api";
+import API_URL from "../config";
+
 
 import './ChatBox.css';
 

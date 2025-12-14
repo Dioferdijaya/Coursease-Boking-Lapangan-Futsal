@@ -144,8 +144,27 @@ export default function LandingPage() {
                 <button onClick={() => { handleLogout(); setMobileMenuOpen(false); }} className="nav-cta logout-btn">Keluar</button>
               </>
             ) : (
-              <Link to="/login" className="nav-cta" onClick={() => setMobileMenuOpen(false)}>Masuk</Link>
-            )}
+              <div className="auth-links">
+                <Link
+                  to="/login"
+                  className="nav-cta"
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  Masuk
+                </Link>
+
+                <span className="auth-separator"> atau </span>
+
+                <Link
+                  to="/register"
+                  className="nav-cta"
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  Daftar
+                </Link>
+              </div>
+            )
+          }
           </nav>
         </div>
       </header>

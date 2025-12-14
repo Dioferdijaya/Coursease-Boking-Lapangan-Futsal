@@ -102,8 +102,29 @@ https://github.com/Dioferdijaya/Coursease-Boking-Lapangan-Futsal.git
 - ✅ UI chat modern dan responsif
 
 ##Tampilan
--Fitur edit profil
+-Landing Page
+<img width="1919" height="933" alt="image" src="https://github.com/user-attachments/assets/89b83d76-64ee-4944-9df1-325ff37c51f6" />
+<img width="1919" height="933" alt="image" src="https://github.com/user-attachments/assets/d4f35fc9-6eec-4c32-b0af-5148ce4d509d" />
+<img width="1919" height="933" alt="image" src="https://github.com/user-attachments/assets/cfbc5ad2-5b08-4400-9a49-0ce994689759" />
+
+-Login Page
+<img width="1919" height="933" alt="image" src="https://github.com/user-attachments/assets/43983294-413a-4582-844f-1caed153f4b9" />
+
+-Register Page
+<img width="1919" height="932" alt="image" src="https://github.com/user-attachments/assets/85e00503-18cf-42c5-bc09-5a6d59e422ec" />
+
+-Home User Page
+<img width="1919" height="934" alt="image" src="https://github.com/user-attachments/assets/34bcb62f-b7da-4ce9-8142-e50ad2045a76" />
+
+-Profile Page
+<img width="1376" height="914" alt="image" src="https://github.com/user-attachments/assets/0f2d8610-86b5-415f-b47a-13ed7e4e78e2" />
+
+-Edit Profile Page
 ![WhatsApp Image 2025-12-09 at 8 48 07 PM](https://github.com/user-attachments/assets/9372d6ac-d94e-44cc-b9d8-e53bc989e82a)
+
+-Chat Admin Page
+![WhatsApp Image 2025-12-09 at 8 48 21 PM](https://github.com/user-attachments/assets/7707fbdd-0789-4fea-af29-aa00373cd1c5)
+
 
 
 ## **Aktifkan atau jalankan server via terminal**

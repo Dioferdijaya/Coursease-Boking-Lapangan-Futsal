@@ -1,12 +1,16 @@
-require("dotenv").config();
+jadi ini diganti gimana tadi
+// server.js
+require('dotenv').config();
 const express = require("express");
 const { createClient } = require("@supabase/supabase-js");
+const cors = require("cors");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const axios = require("axios");
 const http = require("http");
 const { Server } = require("socket.io");
 
+// Import logger dan middleware
 const logger = require("./logger");
 const { requestLogger, logRequest } = require("./middleware/requestLogger");
 
@@ -14,37 +18,25 @@ const app = express();
 const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
-    origin: "https://coursease-boking-lapangan-futsal.vercel.app",
+    origin: process.env.FRONTEND_URL,
     methods: ["GET", "POST"],
     credentials: true
   }
 });
 
+
 // CORS configuration for Express
-app.use((req, res, next) => {
-  res.setHeader(
-    "Access-Control-Allow-Origin",
-    "https://coursease-boking-lapangan-futsal.vercel.app"
-  );
-  res.setHeader(
-    "Access-Control-Allow-Methods",
-    "GET, POST, PUT, PATCH, DELETE, OPTIONS"
-  );
-  res.setHeader(
-    "Access-Control-Allow-Headers",
-    "Content-Type, Authorization"
-  );
-  res.setHeader("Access-Control-Allow-Credentials", "true");
+import cors from "cors";
+import express from "express";
 
-  if (req.method === "OPTIONS") {
-    return res.sendStatus(200);
-  }
+const app = express();
 
-  next();
-});
+app.use(cors({
+  origin: "https://coursease-boking-lapangan-futsal.vercel.app",
+  credentials: true
+}));
 
 app.use(express.json());
-
 
 
 

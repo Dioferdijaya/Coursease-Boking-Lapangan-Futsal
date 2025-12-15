@@ -39,7 +39,6 @@ app.use(cors({
   credentials: true
 }));
 
-app.options("*", cors());
 app.use(express.json());
 
 // Add logging middleware

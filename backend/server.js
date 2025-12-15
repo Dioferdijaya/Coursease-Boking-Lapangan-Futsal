@@ -25,26 +25,12 @@ const io = new Server(server, {
 
 
 // CORS configuration for Express
-const allowedOrigins = [
-  "http://localhost:3000",
-  "https://coursease-boking-lapangan-futsal.vercel.app"
-];
-
 app.use(cors({
-  origin: (origin, callback) => {
-    if (!origin) return callback(null, true); // allow curl / Postman
-
-    if (allowedOrigins.includes(origin)) {
-      return callback(null, true);
-    }
-
-    return callback(new Error("Not allowed by CORS"));
-  },
-  credentials: true,
-  methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
-  allowedHeaders: ["Content-Type", "Authorization"]
+  origin: "https://coursease-boking-lapangan-futsal.vercel.app",
+  credentials: true
 }));
 
+app.options("*", cors());
 app.use(express.json());
 
 

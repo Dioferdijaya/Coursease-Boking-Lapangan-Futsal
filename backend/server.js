@@ -25,21 +25,28 @@ const io = new Server(server, {
 
 
 // CORS configuration for Express
-const allowedOrigin = process.env.FRONTEND_URL;
+const allowedOrigins = [
+  "http://localhost:3000",
+  "https://coursease-boking-lapangan-futsal.vercel.app"
+];
+
 app.use(cors({
   origin: (origin, callback) => {
-    if (!origin || origin === allowedOrigin) {
-      callback(null, true);
-    } else {
-      callback(new Error("Not allowed by CORS"));
+    if (!origin) return callback(null, true); // allow curl / Postman
+
+    if (allowedOrigins.includes(origin)) {
+      return callback(null, true);
     }
+
+    return callback(new Error("Not allowed by CORS"));
   },
+  credentials: true,
   methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
-  allowedHeaders: ["Content-Type", "Authorization"],
-  credentials: true
+  allowedHeaders: ["Content-Type", "Authorization"]
 }));
 
 app.use(express.json());
+
 
 // Add logging middleware
 app.use(logger.addRequestId);

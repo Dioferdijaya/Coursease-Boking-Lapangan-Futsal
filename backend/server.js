@@ -25,13 +25,18 @@ const io = new Server(server, {
 
 
 // CORS configuration for Express
+import cors from "cors";
+import express from "express";
+
+const app = express();
+
 app.use(cors({
   origin: "https://coursease-boking-lapangan-futsal.vercel.app",
   credentials: true
 }));
 
-app.options("*", cors());
 app.use(express.json());
+
 
 
 // Add logging middleware

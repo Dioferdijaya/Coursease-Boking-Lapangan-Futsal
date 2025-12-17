@@ -1,5 +1,5 @@
 # Courstease – Boking Lapangan Futsal
-Sebuah web pemesanan lapangan futsal secara real-time dan digital, Lihat ketersediaan jadwal lapangan secara langsung, Booking Instan, Hanya butuh beberapa langkah mudah untuk mengamankan jadwal. Pilih waktu, lakukan konfirmasi, dan lapangan siap untuk Anda gunakan.
+Sebuah web pemesanan lapangan futsal secara real-time dan digital, Lihat ketersediaan jadwal lapangan secara langsung, Booking Instan, Hanya butuh beberapa langkah mudah untuk mengamankan jadwal. Pilih waktu, lakukan konfirmasi, dan lapangan siap untuk Anda gunakan
 
 Framework: React.js untuk frontend & Express.js & Node.js Untuk backend
 
